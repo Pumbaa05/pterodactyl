@@ -8,16 +8,24 @@ import SubNavigation from '@/components/elements/SubNavigation';
 import { useLocation } from 'react-router';
 import Spinner from '@/components/elements/Spinner';
 import routes from '@/routers/routes';
+import synify from '@/assets/images/synify.svg';
+import tw from 'twin.macro';
 
 export default () => {
     const location = useLocation();
 
     return (
-        <>
-            <NavigationBar />
-            {location.pathname.startsWith('/account') && (
+        <div className='md:grid md:grid-cols-[60px,auto] 2xl:grid-cols-[240px,auto] min-h-full'>
+            {location.pathname.startsWith('/account') ? (
                 <SubNavigation>
-                    <div>
+                    <div className='h-full flex flex-col'>
+                        <NavLink
+                            to={'/'}
+                            exact
+                            css={tw`w-full py-8 flex items-center justify-center text-3xl font-bold`}
+                        >
+                            <img src={synify} alt='logo' />
+                        </NavLink>
                         {routes.account
                             .filter((route) => !!route.name)
                             .map(({ path, name, exact = false }) => (
@@ -27,6 +35,8 @@ export default () => {
                             ))}
                     </div>
                 </SubNavigation>
+            ) : (
+                <NavigationBar />
             )}
             <TransitionRouter>
                 <React.Suspense fallback={<Spinner centered />}>
@@ -45,6 +55,6 @@ export default () => {
                     </Switch>
                 </React.Suspense>
             </TransitionRouter>
-        </>
+        </div>
     );
 };

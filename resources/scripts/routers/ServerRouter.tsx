@@ -113,24 +113,37 @@ export default () => {
                     <InstallListener />
                     <TransferListener />
                     <WebsocketHandler />
-                    {inConflictState && (!rootAdmin || (rootAdmin && !location.pathname.endsWith(`/server/${id}`))) ? (
-                        <ConflictStateRenderer />
-                    ) : (
-                        <ErrorBoundary>
-                            <TransitionRouter>
-                                <Switch location={location}>
-                                    {routes.server.map(({ path, permission, component: Component }) => (
-                                        <PermissionRoute key={path} permission={permission} path={to(path)} exact>
-                                            <Spinner.Suspense>
-                                                <Component />
-                                            </Spinner.Suspense>
-                                        </PermissionRoute>
-                                    ))}
-                                    <Route path={'*'} component={NotFound} />
-                                </Switch>
-                            </TransitionRouter>
-                        </ErrorBoundary>
-                    )}
+                    <div className='grid grid-rows-[60px,auto]'>
+                        <header className='h-full bg-gray-800 px-8 flex items-center'>
+                            <Switch location={location}>
+                                {routes.server.map(({ name }) => (
+                                    <h1 key={name} className='text-2xl'>
+                                        {name}
+                                    </h1>
+                                ))}
+                                <Route path={'*'} component={() => <>Not Found</>} />
+                            </Switch>
+                        </header>
+                        {inConflictState &&
+                        (!rootAdmin || (rootAdmin && !location.pathname.endsWith(`/server/${id}`))) ? (
+                            <ConflictStateRenderer />
+                        ) : (
+                            <ErrorBoundary>
+                                <TransitionRouter>
+                                    <Switch location={location}>
+                                        {routes.server.map(({ path, permission, component: Component }) => (
+                                            <PermissionRoute key={path} permission={permission} path={to(path)} exact>
+                                                <Spinner.Suspense>
+                                                    <Component />
+                                                </Spinner.Suspense>
+                                            </PermissionRoute>
+                                        ))}
+                                        <Route path={'*'} component={NotFound} />
+                                    </Switch>
+                                </TransitionRouter>
+                            </ErrorBoundary>
+                        )}
+                    </div>
                 </div>
             )}
         </React.Fragment>

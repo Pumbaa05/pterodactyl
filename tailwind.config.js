@@ -27,8 +27,8 @@ module.exports = {
                 // "primary" and "neutral" are deprecated, prefer the use of "blue" and "gray"
                 // in new code.
                 primary: colors.blue,
-                gray: gray,
-                neutral: gray,
+                gray: colors.slate,
+                neutral: colors.slate,
                 cyan: colors.cyan,
             },
             fontSize: {
